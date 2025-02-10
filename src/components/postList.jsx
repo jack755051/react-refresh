@@ -36,18 +36,44 @@ export default function PostList({ isPosting, onStopPosting }) {
     <>
       {isPosting && (
         <Modal onClose={onStopPosting}>
-          <NewPost onCancel={onStopPosting} onAddPost={{ addPostsHandler }} />
+          <NewPost onCancel={onStopPosting} onAddPost={addPostsHandler} />
         </Modal>
       )}
-      <ul className={classes.posts}>
-        {defaultPostData.map((post, index) => (
-          <Post
-            key={post.userId || index}
-            author={post.username}
-            body={post.article}
-          />
-        ))}
-      </ul>
+
+      {posts.length > 0 && (
+        <ul className={classes.posts}>
+          {posts.map((post, index) => (
+            <Post key={index} author={post.author} body={post.body} />
+          ))}
+
+          {/*{defaultPostData.map((post, index) => (*/}
+          {/*  <Post*/}
+          {/*    key={post.userId || index}*/}
+          {/*    author={post.username}*/}
+          {/*    body={post.article}*/}
+          {/*  />*/}
+          {/*))}*/}
+        </ul>
+      )}
+
+      {posts.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+          }}
+        >
+          <p style={{ color: "red", fontSize: "40px", fontWeight: "bold" }}>
+            NO POST FOUNDED
+          </p>
+          <p
+            style={{
+              fontSize: "22px",
+            }}
+          >
+            start add some post
+          </p>
+        </div>
+      )}
     </>
   );
 }
