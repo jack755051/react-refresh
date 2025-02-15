@@ -1,6 +1,6 @@
 /** package */
 import { faker } from "@faker-js/faker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 /** template */
 import Post from "./post.jsx";
 import NewPost from "./newPost.jsx";
@@ -28,7 +28,22 @@ export default function PostList({ isPosting, onStopPosting }) {
   const defaultPostData = generatePostData(2);
   const [posts, setPosts] = useState([]);
 
+  useEffect(() => {
+    async function fetchPosts() {
+      const response = await fetch("http://localhost:8080/posts");
+      const resData = await response.json();
+      setPosts(resData.posts);
+    }
+
+    fetchPosts();
+  }, []);
+
   function addPostsHandler(postData) {
+    fetch("http://localhost:8080/posts", {
+      method: "POST",
+      body: JSON.stringify(postData),
+      headers: { "Content-Type": "application/json" },
+    });
     setPosts((existingPosts) => [postData, ...existingPosts]);
   }
 
