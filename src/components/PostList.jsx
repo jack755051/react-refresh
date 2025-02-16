@@ -1,6 +1,6 @@
 /** package */
 import { faker } from "@faker-js/faker";
-import { useEffect, useState } from "react";
+import { useLoaderData } from "react-router-dom";
 /** template */
 import Post from "./post.jsx";
 /** style */
@@ -23,50 +23,18 @@ export function generatePostData(count) {
 }
 
 export default function PostList() {
-  const defaultPostData = generatePostData(2);
-  const [posts, setPosts] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      setIsFetching(true);
-      const response = await fetch("http://localhost:8080/posts");
-      const resData = await response.json();
-      setPosts(resData.posts);
-      setIsFetching(false);
-    }
-
-    fetchPosts();
-  }, []);
-
-  function addPostsHandler(postData) {
-    fetch("http://localhost:8080/posts", {
-      method: "POST",
-      body: JSON.stringify(postData),
-      headers: { "Content-Type": "application/json" },
-    });
-    setPosts((existingPosts) => [postData, ...existingPosts]);
-  }
+  // const defaultPostData = generatePostData(2);
+  const posts = useLoaderData();
 
   return (
     <>
-      {!isFetching && posts.length > 0 && (
+      {posts.length > 0 && (
         <ul className={classes.posts}>
           {posts.map((post, index) => (
             <Post key={index} author={post.author} body={post.body} />
           ))}
-
-          {/*{defaultPostData.map((post, index) => (*/}
-          {/*  <Post*/}
-          {/*    key={post.userId || index}*/}
-          {/*    author={post.username}*/}
-          {/*    body={post.article}*/}
-          {/*  />*/}
-          {/*))}*/}
         </ul>
       )}
-
-      {isFetching && <p>Loading posts....</p>}
 
       {posts.length === 0 && (
         <div

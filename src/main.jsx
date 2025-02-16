@@ -5,9 +5,10 @@ import store from "./store/store.jsx";
 import { Provider } from "react-redux";
 
 import "./index.css";
-import Post from "./routes/Post.jsx";
-import NewPost from "./routes/NewPost.jsx";
+import Post, { loader as postsLoader } from "./routes/Post.jsx";
+import NewPost, { action as newPostAction } from "./routes/NewPost.jsx";
 import RootLayout from "./routes/RootLayout.jsx";
+import ErrorPage from "./routes/ErrorPage.js";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -15,11 +16,15 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
         element: <Post />,
-        children: [{ path: "/create-post", element: <NewPost /> }],
+        loader: postsLoader,
+        children: [
+          { path: "/create-post", element: <NewPost />, action: newPostAction },
+        ],
       },
     ],
   },
