@@ -3,10 +3,8 @@ import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 /** template */
 import Post from "./post.jsx";
-import NewPost from "./newPost.jsx";
-import Modal from "./modal.jsx";
 /** style */
-import classes from "./postList.module.css";
+import classes from "./PostList.module.css";
 
 export function createRandomPostData() {
   return {
@@ -24,7 +22,7 @@ export function generatePostData(count) {
   return faker.helpers.multiple(createRandomPostData, { count });
 }
 
-export default function PostList({ isPosting, onStopPosting }) {
+export default function PostList() {
   const defaultPostData = generatePostData(2);
   const [posts, setPosts] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -52,12 +50,6 @@ export default function PostList({ isPosting, onStopPosting }) {
 
   return (
     <>
-      {isPosting && (
-        <Modal onClose={onStopPosting}>
-          <NewPost onCancel={onStopPosting} onAddPost={addPostsHandler} />
-        </Modal>
-      )}
-
       {!isFetching && posts.length > 0 && (
         <ul className={classes.posts}>
           {posts.map((post, index) => (
