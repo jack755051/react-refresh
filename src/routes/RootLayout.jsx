@@ -1,4 +1,4 @@
-import MainHeader from "../components/mainHeader.jsx";
+import MainHeader from "../components/MainHeader.jsx";
 import { Outlet } from "react-router-dom";
 
 export default function RootLayout() {

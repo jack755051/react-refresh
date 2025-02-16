@@ -34,3 +34,5 @@ root.render(
     <RouterProvider router={router} />
   </StrictMode>,
 );
+
+console.log("Production mode:", import.meta.env.PROD);
